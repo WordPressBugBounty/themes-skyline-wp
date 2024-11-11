@@ -6,10 +6,19 @@ $skyline_slideshow_defaults = array(
     "speed"    => array( "value" => 500 ),
 );
 
+
+add_action('init', function () {
+    add_filter('colibri_theme_title_default_content', function($title) {
+        return __('Don\'t wait for opportunities. <br/><em style="font-weight: 600;">Create them!</em>', 'skyline-wp');
+    });
+    add_filter('colibri_theme_subtitle_default_content', function($subtitle) {
+        return __('Start creating your website today!','skyline-wp');
+    });
+});
+
 return array(
 	'blog_enable_masonry' => false,
-    'lorem_ipsum'       => __('Start creating your website today!','skyline-wp'),
-    'edit_this_text_in_customizer' => __('Don\'t wait for opportunities. <br/><em style="font-weight: 600;">Create them!</em>','skyline-wp'),
+    'lorem_ipsum'       => 'Lorem ipsum dolor sit amet',
     'header_front_page' => array(
         'hero'         => array(
             'hero_column_width' => 100,
@@ -50,7 +59,7 @@ return array(
             )
         ),
         'subtitle'     => array(
-			'value' => __('Start creating your website today!','skyline-wp'),
+			'value' => 'Lorem ipsum dolor sit amet',
             'style' => array(
                 'textAlign' => 'center',
             ),

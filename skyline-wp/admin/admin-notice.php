@@ -5,8 +5,46 @@ use ColibriWP\Theme\Core\Utils;
 use ColibriWP\Theme\Defaults;
 
 $skyline_front_page_design = false;
+$default_front_page_designs =   array(
 
-foreach ( Defaults::get( 'front_page_designs', array() ) as $design ) {
+    array(
+        'name'  =>  __("Modern", 'skyline-wp'),
+        "index" => 3,
+        "meta"  => array(
+            "slug"    => "modern",
+            "version" => "v2"
+        )
+    ),
+
+    array(
+        'name'    =>  __("Modern", 'skyline-wp'),
+        "index"   => 3,
+        "display" => false,
+        "meta"    => array(
+            "slug"    => "modern",
+            "version" => "v1"
+        )
+    ),
+
+    array(
+        'name'  => __("Classic",'skyline-wp'),
+        "index" => 2,
+        "meta"  => array(
+            "slug"    => "classic",
+            "version" => "v1"
+        )
+    ),
+
+    array(
+        'name'  =>  __("Fullscreen", 'skyline-wp'),
+        "index" => 1,
+        "meta"  => array(
+            "slug"    => "fullscreen",
+            "version" => "v1"
+        )
+    ),
+);
+foreach ( $default_front_page_designs as $design ) {
     if ( Utils::pathGet( $design, 'display', true ) ) {
         if ( Utils::pathGet( $design, 'meta.slug' ) === 'modern' ) {
             $skyline_front_page_design = $design;
