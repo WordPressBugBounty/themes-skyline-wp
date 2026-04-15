@@ -105,10 +105,25 @@ foreach ( $default_front_page_designs as $design ) {
                     </div>
                 </div>
                 <div>
-                    <p class="description large-text">
-                        <?php esc_html_e( 'This action will also install the Colibri Page Builder plugin.',
-                            'skyline-wp' ); ?>
-                    </p>
+                    <div class="description large-text">
+                        <?php
+                        if( class_exists('\ColibriWP\SiteLeadsThemeKit\SiteLeads') &&
+                            method_exists('\ColibriWP\SiteLeadsThemeKit\SiteLeads', 'show_install_siteleads_recommendation') &&
+                            \ColibriWP\SiteLeadsThemeKit\SiteLeads::show_install_siteleads_recommendation()) {
+                                esc_html_e(
+                                    sprintf(
+                                        __( 'This action will install the %s recommended', 'skyline-wp' ),
+                                        \ColibriWP\SiteLeadsThemeKit\SiteLeads::get_current_theme_name()
+                                    )
+                                );
+                                \ColibriWP\SiteLeadsThemeKit\SiteLeads::printSiteLeadsRecommendationPlugins();
+                        } else {
+                            esc_html_e( 'This action will also install the Colibri Page Builder plugin.',
+                                'skyline-wp' );
+                        }
+
+                        ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -116,7 +131,7 @@ foreach ( $default_front_page_designs as $design ) {
     </div>
     <?php
     $skyline_builder_slug = Hooks::colibri_apply_filters( 'plugin_slug', 'colibri-page-builder' );
-    wp_localize_script( get_template() . "-page-info", 'colibriwp_builder_status', array(
+    $skyline_builder_status = array(
         "status"         => colibriwp_theme()->getPluginsManager()->getPluginState( $skyline_builder_slug ),
         "install_url"    => colibriwp_theme()->getPluginsManager()->getInstallLink( $skyline_builder_slug ),
         "activate_url"   => colibriwp_theme()->getPluginsManager()->getActivationLink( $skyline_builder_slug ),
@@ -137,6 +152,16 @@ foreach ( $default_front_page_designs as $design ) {
             "activating" => \ColibriWP\Theme\Translations::get( 'activating',
                 'Colibri Page Builder' )
         ),
-    ) );
+    );
+
+    if( class_exists('\ColibriWP\SiteLeadsThemeKit\SiteLeads') &&
+        method_exists('\ColibriWP\SiteLeadsThemeKit\SiteLeads', 'get_js_data')) {
+        $skyline_builder_status['siteLeads'] = \ColibriWP\SiteLeadsThemeKit\SiteLeads::get_instance()->get_js_data(
+            ['startSource' => 'theme-notice']
+        );
+    }
+
+
+    wp_localize_script( get_template() . "-page-info", 'colibriwp_builder_status', $skyline_builder_status );
     ?>
 </div>
